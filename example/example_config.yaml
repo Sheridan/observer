@@ -1,0 +1,44 @@
+---
+  debug: no
+
+  session_storage:
+    storage_folder: /var/lib/observer
+
+  formatter:
+    templates_path: ./templates
+
+  output:
+    telegram:
+      token: 'AAAAA:BBBBB'
+      targets:
+      - name: Observers
+        destination:
+          rooms:
+          - '-12345677890'
+
+  input:
+    journald:
+      rules:
+      - name: new_session
+        match:
+          positive: '^.*Started Session (?P<session_id>.+?) of user (?P<user>.+?)\.$'
+          negative: ''
+        outputs:
+        - Observers
+      - name: interface_status
+        match:
+          positive: '^.*kernel: .+? enp5s0: (?P<event>.+?)$'
+          negative: ''
+        outputs:
+        - Observers
+    logfile:
+      rules:
+      - name: test
+        identifier: sometest
+        match:
+          positive: '^.*test (?P<one>.+?) (?P<two>.+?) test.*$'
+          negative: 'foo'
+        path: /var/log/test.log
+        store_position: False
+        outputs:
+        - Observers
