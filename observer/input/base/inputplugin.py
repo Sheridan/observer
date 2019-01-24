@@ -1,5 +1,7 @@
 from observer import ObserverPlugin
 from observer import st
+import datetime
+import socket
 import re
 
 
@@ -8,6 +10,13 @@ class InputPlugin(ObserverPlugin):
         ObserverPlugin.__init__(self, 'input', plugin_name)
         self._rules = self.prepare_rules()
         self._outputs = outputs
+
+    def make_message(self, data):
+        msg = data
+        msg['input_plugin_name'] = self.plugin_name()
+        msg['timestamp'] = datetime.datetime.now()
+        msg['host'] = socket.gethostname()
+        return msg
 
     def prepare_rules(self):
         rules = []
@@ -42,5 +51,5 @@ class InputPlugin(ObserverPlugin):
                     }
         return None
 
-    def send_message_to_router(self, msg, match_result):
-        self._outputs.send_message(msg, match_result)
+    def send_message_to_router(self, msg, output_targets):
+        self._outputs.send_message(msg, output_targets)

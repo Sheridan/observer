@@ -17,9 +17,9 @@ class OutputRouter:
         self._formatter = Formatter()
         self.send_alive()
 
-    def send_message(self, message, match_result):
+    def send_message(self, message, output_targets):
         for target_output in self._outputs:
-            for target_name in match_result['rule']['outputs']:
+            for target_name in output_targets:
                 if target_output.target_exists(target_name):
                     message['output_plugin_name'] = target_output.plugin_name()
                     target_output.send_message(self._formatter.format(message), target_name)

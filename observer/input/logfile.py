@@ -58,13 +58,10 @@ class InputLogfile(InputPlugin, ThreadHelper):
     def on_entry(self, entry):
         match_result = self.match(entry)
         if match_result:
-            msg = match_result['data']
+            msg = self.make_message(match_result['data'])
             msg['full_message'] = entry
-            msg['input_plugin_name'] = self.plugin_name()
             msg['identifier'] = match_result['rule']['identifier'] if 'identifier' in match_result['rule'] else 'unset'
-            msg['timestamp'] = datetime.datetime.now()
-            msg['host'] = socket.gethostname()
-            self.send_message_to_router(msg, match_result)
+            self.send_message_to_router(msg, match_result['rule']['outputs'])
 
     def threaded(self):
         while True:

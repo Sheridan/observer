@@ -1,7 +1,7 @@
 from observer import st
 import os.path
 import sys
-
+import json
 
 class Formatter:
     def __init__(self):
@@ -12,7 +12,10 @@ class Formatter:
         return self.process_message(self.get_template_content(message), message)
 
     def replace(self, template, needle, replacement):
-        return template.replace('${%s}' % needle, replacement)
+        variable = '${%s}' % needle
+        if variable in template:
+            return template.replace(variable, replacement)
+        return template
 
     def process_message(self, template, message):
         for dt_part in 'YmdHMS':
@@ -22,6 +25,8 @@ class Formatter:
                 template = self.replace(template, key, message['timestamp'].strftime('%Y.%m.%d %H:%M:%S'))
             else:
                 template = self.replace(template, key, message[key])
+        message.pop('timestamp', None)
+        template = self.replace(template, '__all__', json.dumps(message, sort_keys=True, indent=4))
         return template
 
     def get_template_content(self, message):

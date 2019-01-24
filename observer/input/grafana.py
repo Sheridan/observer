@@ -1,6 +1,7 @@
 from observer.webhookhelper import WebhookHelper
 from observer.input.base import InputPlugin
 from observer import st
+import json
 
 LISTEN_INTERFACE = '0.0.0.0'
 LISTEN_PORT = 3214
@@ -26,5 +27,9 @@ class InputGrafana(InputPlugin, WebhookHelper):
             if 'port' not in self._options['listen']:
                 self._options['listen']['port'] = LISTEN_PORT
 
-    # def webhook(self):
-    #     pass
+    def webhook(self, body):
+        data = json.loads(body)
+        st.ST.debugger().print('Grafana incoming', data)
+        msg = self.make_message(data)
+        msg['full_message'] = "[{0}] {1}".format(data['ruleName'], data['message'])
+        self.send_message_to_router(msg, self._options['outputs'])
