@@ -11,7 +11,7 @@ class Debugger:
     def enabled(self):
         return self._debug
 
-    def print(self, title, data):
+    def print(self, title, data=None):
         if self._debug:
             header = '-> {0} <------------------'.format(title)
             print(header)

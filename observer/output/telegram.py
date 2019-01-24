@@ -5,7 +5,7 @@ from observer import st
 
 class OutputTelegram(OutputPlugin):
     def __init__(self):
-        super(OutputTelegram, self).__init__('telegram')
+        OutputPlugin.__init__(self, 'telegram')
 
     def _query(self, method, params=None):
         url = 'https://api.telegram.org/bot{0}/{1}'.format(self._options['token'], method)

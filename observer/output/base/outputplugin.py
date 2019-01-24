@@ -4,7 +4,7 @@ import sys
 
 class OutputPlugin(ObserverPlugin):
     def __init__(self, plugin_name):
-        super(OutputPlugin, self).__init__('output', plugin_name)
+        ObserverPlugin.__init__(self, 'output', plugin_name)
 
     def send_message(self, msg, target_name):
         print("You forgot to implement the send_message method")

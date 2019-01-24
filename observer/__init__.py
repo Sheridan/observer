@@ -3,4 +3,5 @@ from observer.outputrouter import OutputRouter
 from observer.threadhelper import ThreadHelper
 from observer.debuger import Debugger
 from observer.main import Observer
+from observer.webhookhelper import WebhookHelper
 # from observer.st import st

@@ -2,13 +2,15 @@ import datetime
 import socket
 import time
 import os
+from observer.threadhelper import ThreadHelper
 from observer.input.base import InputPlugin
 from observer import st
 
 
-class InputLogfile(InputPlugin):
+class InputLogfile(InputPlugin, ThreadHelper):
     def __init__(self, outputs):
-        super(InputLogfile, self).__init__(outputs, 'logfile')
+        ThreadHelper.__init__(self)
+        InputPlugin.__init__(self, outputs, 'logfile')
         self._data = self.storage().load()
         if 'positions' not in self._data:
             self._data['positions'] = {}
@@ -64,7 +66,7 @@ class InputLogfile(InputPlugin):
             msg['host'] = socket.gethostname()
             self.send_message_to_router(msg, match_result)
 
-    def run(self):
+    def threaded(self):
         while True:
             for rule in self._options['rules']:
                 self.check_log_streams(rule)

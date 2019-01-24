@@ -5,12 +5,15 @@ import re
 
 class InputPlugin(ObserverPlugin):
     def __init__(self, outputs, plugin_name):
-        super(InputPlugin, self).__init__('input', plugin_name)
+        ObserverPlugin.__init__(self, 'input', plugin_name)
         self._rules = self.prepare_rules()
         self._outputs = outputs
 
     def prepare_rules(self):
         rules = []
+        print(self._plugin_name, self._options)
+        if 'rules' not in self._options:
+            return None
         for rule in self._options['rules']:
             rule['pattern'] = {
                 'positive': re.compile(rule['match']['positive']),

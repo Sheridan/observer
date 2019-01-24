@@ -1,6 +1,6 @@
 from observer.configuration import ConfigParser
 from observer import OutputRouter
-from observer.input import InputJournald, InputLogfile
+from observer.input import InputJournald, InputLogfile, InputGrafana
 import time
 import sys
 from observer import st
@@ -16,11 +16,13 @@ class Observer:
             self._inputs.append(InputJournald(self._output_router))
         if 'logfile' in options['input']:
             self._inputs.append(InputLogfile(self._output_router))
+        if 'grafana' in options['input']:
+            self._inputs.append(InputGrafana(self._output_router))
         if not self._inputs:
             print("You forgot to define any input plugin")
             sys.exit()
 
-    def run(self):
+    def threaded(self):
         for x in self._inputs:
             x.start()
         while True:

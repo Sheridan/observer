@@ -1,15 +1,16 @@
 from systemd import journal
 import select
 import time
+from observer.threadhelper import ThreadHelper
 from observer.input.base import InputPlugin
 
 
-class InputJournald(InputPlugin):
-
+class InputJournald(InputPlugin, ThreadHelper):
     def __init__(self, outputs):
-        super(InputJournald, self).__init__(outputs, 'journald')
+        ThreadHelper.__init__(self)
+        InputPlugin.__init__(self, outputs, 'journald')
 
-    def run(self):
+    def threaded(self):
         j = journal.Reader()
         while True:
             j.seek_tail()

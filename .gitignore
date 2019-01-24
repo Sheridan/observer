@@ -4,3 +4,4 @@ __pycache__/
 
 # Test config with real data
 config.yaml
+example/storage/*

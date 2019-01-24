@@ -2,7 +2,7 @@
   debug: no
 
   session_storage:
-    storage_folder: /var/lib/observer
+    storage_folder: ./storage
 
   formatter:
     templates_path: ./templates
@@ -17,6 +17,11 @@
           - '-12345677890'
 
   input:
+    grafana:
+      listen:
+        port: 3214
+      outputs:
+        - Observers
     journald:
       rules:
       - name: new_session
