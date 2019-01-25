@@ -1,5 +1,3 @@
-import datetime
-import socket
 import time
 import os
 from observer.threadhelper import ThreadHelper
@@ -15,11 +13,6 @@ class InputLogfile(InputPlugin, ThreadHelper):
         if 'positions' not in self._data:
             self._data['positions'] = {}
 
-    def gen_position_id(self, rule):
-        return '{0}:{1}:{2}'.format(rule['path'],
-                                    rule['match']['positive'],
-                                    rule['match']['negative'] if 'negative' in rule['match'] else 'none')
-
     def load_file_position(self, rule):
         if rule['name'] not in self._data['positions']:
             self._data['positions'][rule['name']] = -1
@@ -27,9 +20,6 @@ class InputLogfile(InputPlugin, ThreadHelper):
 
     def store_file_position(self, rule, position):
         self._data['positions'][rule['name']] = position
-
-    def update_positions(self):
-        self.storage().store(self._data)
 
     def seek_on_file(self, log_stream, rule):
         position = self.load_file_position(rule)
@@ -67,5 +57,5 @@ class InputLogfile(InputPlugin, ThreadHelper):
         while True:
             for rule in self._options['rules']:
                 self.check_log_streams(rule)
-            self.update_positions()
+            self.storage().store(self._data)
             time.sleep(1)
