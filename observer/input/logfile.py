@@ -43,10 +43,10 @@ class InputLogfile(InputPlugin, ThreadHelper):
                 for line in logs.split('\n'):
                     line = line.strip()
                     if line:
-                        self.on_entry(line)
+                        self.on_entry(line, rule)
 
-    def on_entry(self, entry):
-        match_result = self.match(entry)
+    def on_entry(self, entry, rule):
+        match_result = self.match(rule, entry)
         if match_result:
             msg = self.make_message(match_result['data'])
             msg['full_message'] = entry

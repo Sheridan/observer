@@ -37,18 +37,24 @@ class InputPlugin(ObserverPlugin):
     def match(self, text):
         st.ST.debugger().print('Match text', text)
         for rule in self._rules:
-            if st.ST.debugger().enabled():
-                st.ST.debugger().print('Positive match', {'pattern': rule['pattern']['positive'], 'match': rule['pattern']['positive'].match(text)})
-                st.ST.debugger().print('Negative match', {'pattern': rule['pattern']['negative'], 'match': self.match_negative(rule, text)})
-            if not self.match_negative(rule, text):
-                match_result = rule['pattern']['positive'].match(text)
-                if match_result:
-                    data = match_result.groupdict()
-                    data['rule_name'] = rule['name']
-                    return {
-                        'rule': rule,
-                        'data': data
-                    }
+            return self.match(text, rule)
+
+    def match(self, rule, text):
+        st.ST.debugger().print('Match text', text)
+        if st.ST.debugger().enabled():
+            st.ST.debugger().print('Positive match', {
+                'pattern': rule['pattern']['positive'], 'match': rule['pattern']['positive'].match(text)})
+            st.ST.debugger().print('Negative match', {
+                'pattern': rule['pattern']['negative'], 'match': self.match_negative(rule, text)})
+        if not self.match_negative(rule, text):
+            match_result = rule['pattern']['positive'].match(text)
+            if match_result:
+                data = match_result.groupdict()
+                data['rule_name'] = rule['name']
+                return {
+                    'rule': rule,
+                    'data': data
+                }
         return None
 
     def send_message_to_router(self, msg, output_targets):
