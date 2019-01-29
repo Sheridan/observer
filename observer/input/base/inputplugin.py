@@ -37,7 +37,10 @@ class InputPlugin(ObserverPlugin):
     def match(self, text):
         st.ST.debugger().print('Match text', text)
         for rule in self._rules:
-            return self.match(text, rule)
+            match_result = self.match(text, rule)
+            if match_result:
+                return match_result
+        return None
 
     def match(self, rule, text):
         st.ST.debugger().print('Match text', text)
