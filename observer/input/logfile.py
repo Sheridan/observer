@@ -55,7 +55,7 @@ class InputLogfile(InputPlugin, ThreadHelper):
 
     def threaded(self):
         while True:
-            for rule in self._options['rules']:
+            for rule in self._rules:
                 self.check_log_streams(rule)
             self.storage().store(self._data)
             time.sleep(1)
