@@ -20,7 +20,6 @@ class InputPlugin(ObserverPlugin):
 
     def prepare_rules(self):
         rules = []
-        print(self._plugin_name, self._options)
         if 'rules' not in self._options:
             return None
         for rule in self._options['rules']:
@@ -37,7 +36,7 @@ class InputPlugin(ObserverPlugin):
     def match_rules(self, text):
         st.ST.debugger().print('Match text', text)
         for rule in self._rules:
-            match_result = self.match_rule(text, rule)
+            match_result = self.match_rule(rule, text)
             if match_result:
                 return match_result
         return None
