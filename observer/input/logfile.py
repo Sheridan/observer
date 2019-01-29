@@ -46,7 +46,7 @@ class InputLogfile(InputPlugin, ThreadHelper):
                         self.on_entry(line, rule)
 
     def on_entry(self, entry, rule):
-        match_result = self.match(rule, entry)
+        match_result = self.match_rule(rule, entry)
         if match_result:
             msg = self.make_message(match_result['data'])
             msg['full_message'] = entry

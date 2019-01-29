@@ -34,15 +34,15 @@ class InputPlugin(ObserverPlugin):
     def match_negative(self, rule, text):
         return rule['pattern']['negative'] and rule['pattern']['negative'].search(text)
 
-    def match(self, text):
+    def match_rules(self, text):
         st.ST.debugger().print('Match text', text)
         for rule in self._rules:
-            match_result = self.match(text, rule)
+            match_result = self.match_rule(text, rule)
             if match_result:
                 return match_result
         return None
 
-    def match(self, rule, text):
+    def match_rule(self, rule, text):
         st.ST.debugger().print('Match text', text)
         if st.ST.debugger().enabled():
             st.ST.debugger().print('Positive match', {

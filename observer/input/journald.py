@@ -30,7 +30,7 @@ class InputJournald(InputPlugin, ThreadHelper):
     def on_entry(self, entry):
         idnt = entry['SYSLOG_IDENTIFIER'] if entry['SYSLOG_IDENTIFIER'] is not None else 'Unknown'
         match_text = '{0}: {1}'.format(idnt, entry['MESSAGE'])
-        match_result = self.match(match_text)
+        match_result = self.match_rules(match_text)
         if match_result:
             msg = self.make_message(match_result['data'])
             msg['full_message'] = entry['MESSAGE']
