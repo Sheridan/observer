@@ -61,3 +61,6 @@ class InputPlugin(ObserverPlugin):
 
     def send_message_to_router(self, msg, output_targets):
         self._outputs.send_message(msg, output_targets)
+
+    def make_rile_name(self, text):
+        return re.sub(r'[^0-9a-zA-Z]+', '_', text.lower())
