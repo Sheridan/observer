@@ -46,6 +46,7 @@ class InputGrafana(InputPlugin, WebhookHelper):
             eval_msg = msg.copy()
             eval_msg['matched_metric'] = eval_match['metric']
             eval_msg['matched_value'] = eval_match['value']
-            for key, value in eval_match['tags']:
-                eval_msg['matched_tag_{0}'.format(key)] = value
+            if eval_match['tags']:
+                for key, value in eval_match['tags']:
+                    eval_msg['matched_tag_{0}'.format(key)] = value
             self.send_message_to_router(msg, self._options['outputs'])
