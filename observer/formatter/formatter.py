@@ -8,7 +8,7 @@ class Formatter:
     def __init__(self):
         self._options = st.ST.options()['formatter']
         self._keywords = {
-            'include': re.compile('{\#include\s+(?P<include_name>\w+)\W*}')
+            'include': re.compile('{\include\s+(?P<include_name>\w+)\W*}')
         }
 
     def format(self, message):
@@ -42,7 +42,7 @@ class Formatter:
         if match_result:
             data = match_result.groupdict()
             st.ST.debugger().print("Template include data", data)
-            return self.replace_includes(re.sub('{{\#include\s+{0}\W*}}'.format(data['include_name']), self.get_template_content(message, data['include_name']), template), message)
+            return self.replace_includes(re.sub('{{\include\s+{0}\W*}}'.format(data['include_name']), self.get_template_content(message, data['include_name']), template), message)
         return template
 
     def process_message(self, template, message):
