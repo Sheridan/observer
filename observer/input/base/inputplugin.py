@@ -34,7 +34,7 @@ class InputPlugin(ObserverPlugin):
         return rule['pattern']['negative'] and rule['pattern']['negative'].search(text)
 
     def match_rules(self, text):
-        st.ST.debugger().print('Match text', text)
+        # st.ST.debugger().print('Match text', text)
         for rule in self._rules:
             match_result = self.match_rule(rule, text)
             if match_result:
@@ -42,12 +42,12 @@ class InputPlugin(ObserverPlugin):
         return None
 
     def match_rule(self, rule, text):
-        st.ST.debugger().print('Match text', text)
-        if st.ST.debugger().enabled():
-            st.ST.debugger().print('Positive match', {
-                'pattern': rule['pattern']['positive'], 'match': rule['pattern']['positive'].match(text)})
-            st.ST.debugger().print('Negative match', {
-                'pattern': rule['pattern']['negative'], 'match': self.match_negative(rule, text)})
+        # st.ST.debugger().print('Match text', text)
+        # if st.ST.debugger().enabled():
+        #     st.ST.debugger().print('Positive match', {
+        #         'pattern': rule['pattern']['positive'], 'match': rule['pattern']['positive'].match(text)})
+        #     st.ST.debugger().print('Negative match', {
+        #         'pattern': rule['pattern']['negative'], 'match': self.match_negative(rule, text)})
         if not self.match_negative(rule, text):
             match_result = rule['pattern']['positive'].match(text)
             if match_result:
