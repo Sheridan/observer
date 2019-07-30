@@ -7,7 +7,7 @@ class ConfigParser:
 
     def load(self):
         with open(self._config_file, 'r') as stream:
-            return self.check(yaml.load(stream))
+            return self.check(yaml.safe_load(stream))
 
     def check(self, options):
         if 'proxy' not in options:
