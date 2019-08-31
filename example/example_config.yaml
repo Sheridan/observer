@@ -1,6 +1,14 @@
 ---
   debug: no
 
+  proxy:
+    enabled: yes
+    host: 11.12.13.14
+    port: 1080
+    type: socks5
+    user: username
+    pass: p!a$$w0rd
+
   session_storage:
     storage_folder: ./storage
 
