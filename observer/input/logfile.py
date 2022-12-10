@@ -45,8 +45,8 @@ class InputLogfile(InputPlugin, ThreadHelper):
                         line = line.strip()
                         if line:
                             self.on_entry(line, rule)
-        except OSError:
-            print("Could not open/read file {0}".format(rule['path']))
+        except OSError as error:
+            print("Could not open/read file {0}: ".format(rule['path'], error))
 
     def on_entry(self, entry, rule):
         match_result = self.match_rule(rule, entry)
