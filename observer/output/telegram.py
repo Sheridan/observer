@@ -2,10 +2,22 @@ import requests
 from observer.output.base import OutputPlugin
 from observer import st
 
+import socket
+import requests.packages.urllib3.util.connection as urllib3_cn
+
+def allowed_gai_family():
+    family = socket.AF_INET # force IPv4
+    return family
+
 
 class OutputTelegram(OutputPlugin):
     def __init__(self):
         OutputPlugin.__init__(self, 'telegram')
+        if self._options['ipv4']:
+            self.set_ipv4_only()
+
+    def set_ipv4_only(self):
+        urllib3_cn.allowed_gai_family = allowed_gai_family
 
     def _query(self, method, params=None):
         url = 'https://api.telegram.org/bot{0}/{1}'.format(self._options['token'], method)

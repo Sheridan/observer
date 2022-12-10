@@ -35,15 +35,18 @@ class InputLogfile(InputPlugin, ThreadHelper):
                 log_stream.seek(position, 0)
 
     def check_log_streams(self, rule):
-        with open(rule['path'], 'r') as log_stream:
-            self.seek_on_file(log_stream, rule)
-            logs = log_stream.read()
-            self.store_file_position(rule, log_stream.tell())
-            if logs.strip():
-                for line in logs.split('\n'):
-                    line = line.strip()
-                    if line:
-                        self.on_entry(line, rule)
+        try:
+            with open(rule['path'], 'r') as log_stream:
+                self.seek_on_file(log_stream, rule)
+                logs = log_stream.read()
+                self.store_file_position(rule, log_stream.tell())
+                if logs.strip():
+                    for line in logs.split('\n'):
+                        line = line.strip()
+                        if line:
+                            self.on_entry(line, rule)
+        except OSError:
+            print("Could not open/read file {0}".format(rule['path']))
 
     def on_entry(self, entry, rule):
         match_result = self.match_rule(rule, entry)
